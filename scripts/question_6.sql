@@ -9,27 +9,14 @@
 SELECT playerid,
        namefirst, 
 	   namelast,
-       SUM(SB) AS stolen_bases,
-	   SUM(CS) AS caught_stealing,
-	   ROUND(SUM(COALESCE(SB,0))::numeric / SUM(COALESCE(SB,0) + COALESCE(CS,0))::numeric
-			 ,2) AS stolen_base_attempt_success
+	   ROUND(100 * SUM(COALESCE(SB,0))::numeric / SUM(COALESCE(SB,0) + COALESCE(CS,0))::numeric
+			 ,2) AS stolen_base_success
 FROM batting INNER JOIN people USING (playerid)
 WHERE yearid = 2016
       AND COALESCE(SB,0) + COALESCE(CS,0) > 0 
 GROUP BY playerid, namefirst, namelast
 HAVING SUM(SB) >= 20
-ORDER BY stolen_base_attempt_success DESC;
+ORDER BY stolen_base_success DESC
+LIMIT 1;
 
-SELECT playerid,
-	   sb,
-	   cs,
-	   SB+CS
-from batting
-where sb is null
-      and cs is not null;
-
-select count(*) from batting where SB is null and cs is not null;
---79360 records   SB is not null    CS is not null  Included
---1300 records    SB is null        CS is null      Not included
---0 records       SB is null        CS is not null  --none--
---22156 records   SB is null        CS is not null  ???
+--Chris Owings has the highest percentage of stolen base attempts that are successful: %91.30
