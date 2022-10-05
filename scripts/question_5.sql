@@ -16,6 +16,9 @@ WHERE yearid >= 1920
 GROUP BY decade
 ORDER BY decade DESC;
 
+-- We can see a trend in number of strikeouts increasing with decades increasing. 
+-- Where homeruns stays relatively similar throughout decades.
+-- Pitchers got better? 
 
 
 
