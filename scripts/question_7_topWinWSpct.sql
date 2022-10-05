@@ -11,18 +11,18 @@ SELECT 	--Outer query, analyzes when world series is won by max win teams.
 		WHEN m.wswin = 'Y' THEN 1 
 		ELSE 0 END
 		) AS most_wins_won, 
-		CONCAT	( --Add a % sign to percentage
-			ROUND(	(	( --Cut it down to three sig figs
-				SUM	( --Same function as lines 9-13
-	CASE 
-		WHEN m.wswin = 'Y' THEN 1 
-		ELSE 0 END
-					)
-						)::numeric --Converts to numeric because ints don't decimalize
-					)/(COUNT(m.yearid)::numeric --Number of years of baseball from 1970 to 2016
-					  )*100, 1 --Convert to percent, finish ROUND function
-				 ), '%' --Finish concat function
-				) AS most_wins_won_pct
+	CONCAT	( --Add a % sign to percentage
+		ROUND(	(	( --Cut it down to three sig figs
+			SUM	( --Same function as lines 9-13
+			CASE 
+				WHEN m.wswin = 'Y' THEN 1 
+				ELSE 0 END
+				)
+					)::numeric --Converts to numeric because ints don't decimalize
+				)/(COUNT(m.yearid)::numeric --Number of years of baseball from 1970 to 2016
+				  )*100, 1 --Convert to percent, finish ROUND function
+			 ), '%' --Finish concat function
+			) AS most_wins_won_pct
 FROM	(
 	SELECT	--Middle query, serves only to intermediary between innermost and outermost. Trimmed down to only max wins teams by a double-conditioned inner join.
 		t.yearid, 
