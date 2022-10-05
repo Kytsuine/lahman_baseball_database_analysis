@@ -19,7 +19,7 @@ SELECT 	--Outer query, analyzes when world series is won by max win teams.
 				ELSE 0 END
 				)
 					)::numeric --Converts to numeric because ints don't decimalize
-				)/(COUNT(m.yearid)::numeric --Number of years of baseball from 1970 to 2016
+				)/(COUNT(m.wswin)::numeric --Number of years of baseball from 1970 to 2016
 				  )*100, 1 --Convert to percent, finish ROUND function
 			 ), '%' --Finish concat function
 			) AS most_wins_won_pct
