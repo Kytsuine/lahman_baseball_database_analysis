@@ -66,9 +66,8 @@ GROUP BY CUBE(throws,cy_young_winner);
 --------------------------------------------------------
 --Are they more likely to make it into the hall of fame?
 
-
---This analysis only considers players who have been a pitcher in any year since 1936,
---which is the first year players were inducted into the Baseball Hall of Fame.
+--The first players were inducted into the Baseball Hall of Fame in 1936,
+--but players from before that time can be/have been inducted. 
 
 WITH hall_of_fame_players AS (SELECT distinct playerid
 						      FROM halloffame
@@ -81,7 +80,6 @@ FROM
 		   COUNT(DISTINCT playerid) AS num_pitchers
 		FROM people INNER JOIN pitching USING (playerid)
 		WHERE throws IN ('R','L')
-			  AND pitching.yearid >= 1936
 			  AND playerid IN (SELECT * FROM hall_of_fame_players)
 		GROUP BY throws
 	UNION
@@ -90,17 +88,16 @@ FROM
 		   COUNT(DISTINCT playerid) AS num_pitchers
 		FROM people INNER JOIN pitching USING (playerid)
 		WHERE throws IN ('R','L')
-			  AND pitching.yearid >= 1936
 			  AND playerid NOT IN (SELECT * FROM hall_of_fame_players)
 		GROUP BY throws
 	) AS thisquery
 GROUP BY CUBE(throws,in_hall_of_fame);
 
---(11/45) = 24.44% of pitchers inducted into the Hall of Fame are left-handed.
---(1850/6617) = 27.96% of all pitchers (since 1936) are left-handed.
+--(22/94) = 23.40% of pitchers inducted into the Hall of Fame are left-handed.
+--(2477/9082) = 27.27% of all pitchers are left-handed.
 
---(11/1850) = 0.59% of left-handed pitchers have been inducted into the Hall of Fame.
---(34/4767) = 0.71% of right-handed pitchers have been inducted into the Hall of Fame.
+--(22/2477) = 0.89% of left-handed pitchers have been inducted into the Hall of Fame.
+--(72/6605) = 1.09% of right-handed pitchers have been inducted into the Hall of Fame.
 
 --Left-handed pitchers are slightly less likely to be inducted into the Hall of Fame
 --than right-handed pitchers.
@@ -111,4 +108,10 @@ GROUP BY CUBE(throws,in_hall_of_fame);
 --of pitchers who are left-handed is much higher than in the general population. 
 --Based on analyzing Cy Young award winners and Hall of Fame
 --inductees, it is not clear that left-handed pitchers are more effective than right-handed
---pitchers; the results are mixed.
+--pitchers; the results are mixed. A possible explanation is that discrimination against
+--left-handed pitchers, especially in the early years of the Hall of Fame, led some
+--Hall of Fame voters to favor right-hand pitchers. The Cy Young Award began more recently
+--and so would be affected less by discrimination against the left-handed. A next
+--step would be to compare results in early vs later decades. Also, an analysis of 
+--winners of the Pitching Triple Crown would provide evidence not affected by discrimination;
+--the Triple Crown is decided by stats and not by voting.
