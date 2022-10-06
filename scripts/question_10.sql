@@ -12,7 +12,7 @@ WITH hr_high AS
 	   playerid,
 	   yearid,
 	   HR,
-	   MAX(HR)  OVER(PARTITION BY playerid) as max_hr
+	   MAX(HR) OVER(PARTITION BY playerid) as max_hr
 	 FROM batting
 	 ORDER BY max_hr DESC
 	 )
@@ -28,10 +28,10 @@ JOIN people
 USING(playerid)
 	WHERE playerid IN( 
 
--------- GeT CaReEr LeNgTh -------	
+------ Career length 10 or more ----		
 		
-		WITH len_of_career AS 
-			(SELECT COUNT(DISTINCT yearid) AS num_seasons,
+		SELECT playerid
+		FROM (SELECT COUNT(DISTINCT yearid) AS num_seasons,
 	 	 			namelast,
 	 				namefirst,
 		 			playerid
@@ -40,14 +40,11 @@ USING(playerid)
 		 		USING(playerid)
 		 		GROUP BY playerid, namelast, namefirst
 		 		ORDER BY num_seasons DESC
-	          )
------- Career length 10 or more ----		
-		SELECT playerid
-		FROM len_of_career
+	          ) AS len_of_career
 		WHERE num_seasons >= 10
 	                  )
 					  
--------  -Finish Table   ------------	
+-------- Finish Table ------------	
 	
 	AND yearid = 2016
 	AND HR >= 1
@@ -65,23 +62,6 @@ ORDER BY HR DESC;
 
 
 
-----------IM-TRASH-------------
-/*
-
-WITH player_hr_by_year AS 
-(SELECT p.namelast,
-	   p.namefirst,
-	   yearid,
-	   SUM(b.HR) AS total_hr
-FROM people AS p
-INNER JOIN batting AS b
-	USING(playerid)
-WHERE yearid = 2016
-GROUP BY yearid, p.namelast,
-	   p.namefirst)
-	   
-*/
------------------------------
 
 
 
