@@ -60,6 +60,18 @@ GROUP BY CUBE(throws,cy_young_winner);
 --(24/1593) = 1.51% of left-handed pitchers have won the Cy Young Award. 
 --(53/4004) = 1.32% of right-handed pitchers have won the Cy Young Award. 
 
+SELECT throws, 
+       num_awards, 
+	   CONCAT(ROUND(100*num_awards/SUM(num_awards) OVER(),2)::text,'%') AS perc_of_awards
+FROM
+	(SELECT throws, COUNT(*) AS num_awards
+	FROM people INNER JOIN awardsplayers USING(playerid)
+	WHERE awardid = 'Cy Young Award'
+	GROUP BY throws) AS award_by_throw
+GROUP BY throws, num_awards;
+
+--33.04% of Cy Young Awards have been given to left-handed pitchers.
+
 --Left-handed pitchers are slightly more likely to win the Cy Young Award
 --than right-handed pitchers.
 
