@@ -18,7 +18,7 @@ GROUP BY namefirst, namelast, height, playerid
 ORDER BY height;
 
 -- how many games Eddie played in AND what team name --
-SELECT COUNT(G_all), 
+SELECT DISTINCT G_ALL as games_played, 
 	   teamID, 
 	   t.name, 
 	   a.yearID
@@ -26,4 +26,4 @@ FROM appearances AS a
 INNER JOIN teams AS t
 USING(teamID)
 WHERE playerid = 'gaedeed01'
-GROUP BY a.teamID, t.name, a.yearID;
+GROUP BY a.teamID, t.name, a.yearID, g_all;
