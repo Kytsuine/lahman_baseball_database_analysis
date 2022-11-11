@@ -4,6 +4,7 @@
 
 ### Use SQL queries to find answers to the *Initial Questions*. If time permits, choose one (or more) of the *Open-Ended Questions*. Toward the end of the bootcamp, we will revisit this data if time allows to combine SQL, Excel Power Pivot, and/or Python to answer more of the *Open-Ended Questions*.
 
+My work: Solutions to questions 4, 7, 8, 11, 12a, and 12b are mine. All other solutions include me as reviewer/commenter (comments may be found at parent repository, in pull request history).
 
 
 **Initial Questions**
